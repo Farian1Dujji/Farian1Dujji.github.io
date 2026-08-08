@@ -1,0 +1,126 @@
+:root
+
+body{
+    background-color: black;
+    color: rgb(226, 219, 209);
+    font-family: Georgia, 'Times New Roman', Times, sehoma, Geneva, Verdana, sans-serif;
+}
+
+p{
+    border-bottom: 2px solid;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+
+}
+
+p{
+    text-align: center;
+    text-align: left;
+}
+
+h1{
+    text-align: center;
+}
+
+/* Style the links in your text */
+.hover-preview {
+  color: #00ffcc;
+  text-decoration: none;
+  border-bottom: 1px dashed #00ffcc;
+  cursor: pointer; /* Changed from 'help' to 'pointer' */
+}
+
+/* Style the universal preview box */
+.preview-card {
+  position: absolute;
+  display: none;
+  width: 450px;              /* Wider to fit a real website window */
+  height: 300px;             /* Taller to see the content */
+  background-color: #1a1a1a;
+  border: 2px solid #444444; 
+  border-radius: 8px;
+  z-index: 1000;
+  overflow: hidden;          /* Keeps the website frame rounded cleanly */
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Style the live frame window */
+.preview-card iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  /* Note: Most websites are white. This forces the preview window 
+     to invert colors so it stays dark themed like your essay! */
+  filter: invert(1) hue-rotate(180deg); 
+}
+/* Base link style */
+.wiki-hover-link {
+  color: #00ffcc;
+  text-decoration: none;
+  border-bottom: 1px dashed #00ffcc;
+  cursor: pointer;
+}
+
+/* Container for the Wikipedia card layout */
+.wiki-card {
+  position: absolute;
+  display: none;
+  width: 350px;
+  background-color: #1a1a1a; /* Dark theme card background */
+  color: #e0e0e0;            /* Off-white readable text */
+  border: 1px solid #444444; 
+  padding: 16px;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0px 8px 24px rgba(0,0,0,0.6);
+  z-index: 1000;
+  pointer-events: none;      /* Prevents card from flickering under cursor */
+}
+
+/* Layout arrangement inside the box */
+.wiki-card-content {
+  display: flex;
+  gap: 12px;
+}
+
+.wiki-card-text {
+  flex: 1;
+}
+
+/* Card typography matching your scheme */
+.wiki-card h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.wiki-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #cccccc;
+  /* Cuts off long paragraphs after 4 lines gracefully */
+  display: -webkit-box;
+  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Floating thumbnail style matching native Wikipedia design */
+
+}
+<div class="website-container">
+  <!-- Left Side: Image -->
+  <img src="jjpic.png" alt="My Screenshot" class="left-image">
+  
+  <!-- Right Side: Main Content -->
+  <div class="main-content">
+    <h1>Welcome to My Website</h1>
+    <p>This text will neatly wrap and stay on the right side of the picture.</p>
+  </div>
+</div>
+
+.link-container {
+  display: flex;
+   gap: 20px;
+}
