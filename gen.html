@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500-Digit Large View Generator</title>
+    <style>
+        /* Resets the page to utilize 100% of the screen */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0b0f19;
+            color: #00ff66;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top control bar */
+        .controls {
+            padding: 15px;
+            background: #161b26;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #00ff66;
+            z-index: 10;
+        }
+
+        label {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        input {
+            font-size: 1.2rem;
+            padding: 5px 10px;
+            width: 80px;
+            background: #0b0f19;
+            color: #fff;
+            border: 1px solid #00ff66;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 6px 20px;
+            background: #00ff66;
+            color: #0b0f19;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #fff;
+            box-shadow: 0 0 15px #00ff66;
+        }
+
+        /* Huge output area occupying full remaining space */
+        #output { 
+            flex: 1;
+            padding: 30px;
+            box-sizing: border-box;
+            word-break: break-all; /* Forces characters to wrap cleanly at screen edge */
+            overflow-y: auto; /* Adds scrollbar if 500 massive digits exceed screen height */
+            
+            /* Massive Typography */
+            font-size: 5.5vw; /* Scales size dynamically based on screen width */
+            line-height: 1.1;
+            letter-spacing: 2px;
+            text-align: justify;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+        <div class="controls">
+        <label for="digits">Digits (Max 500):</label>
+        <input type="number" id="digits" min="1" max="500" value="100">
+        <button onclick="generateLargeNumber()">GENERATE</button>
+        <button id="finishBtn" onclick="goToVerify()" style="background:#ffaa00;">FINISH</button>
+    </div>
+
+    <div id="output">Press Generate to start...</div>
+    <script>
+        // Global variable to keep track of the generated number across screens
+        let generatedString = "";
+
+        function generateLargeNumber() {
+            const n = parseInt(document.getElementById('digits').value);
+            
+            if (isNaN(n) || n < 1 || n > 500) {
+                document.getElementById('output').textContent = "ERROR: Choose between 1 and 500.";
+                document.getElementById('output').style.color = "#ff3333";
+                return;
+            }
+
+            // Reset text color to glowing green
+            document.getElementById('output').style.color = "#00ff66";
+
+            let result = "";
+
+            // First digit (1-9) to avoid leading zeros
+            const firstDigit = Math.floor(Math.random() * 9) + 1; 
+            result += firstDigit;
+
+            // Loop for remaining digits (0-9)
+            for (let i = 1; i < n; i++) {
+                const nextDigit = Math.floor(Math.random() * 10); 
+                result += nextDigit;
+            }
+
+            // Save result to global variable and display it
+            generatedString = result;
+            document.getElementById('output').textContent = result;
+        }
+
+        function goToVerify() {
+            // Check if a number has actually been generated yet
+            if (!generatedString || generatedString === "Press Generate to start...") {
+                alert("Please click GENERATE to create a random number first!");
+                return;
+            }
+            
+            // Hide the generation screens and reveal the typing screen
+            document.querySelector('.controls').style.display = 'none';
+            document.getElementById('output').style.display = 'none';
+            document.getElementById('verifyScreen').style.display = 'flex';
+        }
+
+        function compareNumbers() {
+            const userString = document.getElementById('userInput').value.trim();
+            const verifyScreen = document.getElementById('verifyScreen');
+            
+            // Re-render the full window screen layout cleanly to show outcomes side-by-side
+            verifyScreen.innerHTML = `
+                <div style="font-size: 1.5rem; color: #fff; margin-bottom: 10px;">ORIGINAL NUMBER:</div>
+                <div style="font-size: 4vw; word-break: break-all; color: #00ff66; margin-bottom: 30px; font-family: monospace; letter-spacing: 2px;">${generatedString}</div>
+                
+                <div style="font-size: 1.5rem; color: #fff; margin-bottom: 10px;">YOUR SUBMISSION:</div>
+                <div id="diffOutput" style="font-size: 4vw; word-break: break-all; font-family: monospace; letter-spacing: 2px; line-height: 1.1;"></div>
+                
+                <button onclick="window.location.reload()" style="margin-top: 40px; font-size: 1.2rem; padding: 12px 25px; background: #fff; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">TRY AGAIN</button>
+            `;
+
+            const diffOutput = document.getElementById('diffOutput');
+            let dynamicHTML = "";
+            const maxLength = Math.max(generatedString.length, userString.length);
+
+            // Run alignment checks character by character
+            for (let i = 0; i < maxLength; i++) {
+                const genChar = generatedString[i] || "";
+                const userChar = userString[i] || "";
+
+                if (userChar === "") {
+                    continue; 
+                } else if (userChar === genChar) {
+                    dynamicHTML += `<span style="color: #00ff66;">${userChar}</span>`;
+                } else {
+                    dynamicHTML += `<span style="color: #ff3333; text-decoration: underline;">${userChar}</span>`;
+                }
+            }
+            diffOutput.innerHTML = dynamicHTML;
+        }
+    </script>
+
+<!-- Add this structure right above </body> -->
+<div id="verifyScreen" style="display:none; flex: 1; flex-direction: column; padding: 30px; box-sizing: border-box; background: #0b0f19;">
+    <h3 style="color: #fff; margin-top: 0;">Type the generated number from memory:</h3>
+    <textarea id="userInput" style="width: 100%; flex: 1; min-height: 150px; background: #161b26; color: #fff; border: 2px solid #ffaa00; border-radius: 4px; font-size: 2rem; padding: 15px; box-sizing: border-box; font-family: monospace; word-break: break-all; margin-bottom: 20px;" placeholder="Start typing here..."></textarea>
+    <button onclick="compareNumbers()" style="font-size: 1.5rem; padding: 12px; background: #00ff66; color: #0b0f19; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">SUBMIT VERIFICATION</button>
+</div>
+
+</body>
+</html>
+
+
